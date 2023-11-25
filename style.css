@@ -1,3 +1,25 @@
-body{
+body {
     font-family: 'Courier New', Courier, monospace;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.top-title {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#dataStructureSelector {
+    margin-right: 10px;
+}
+
+#operationsSection {
+    margin-top: 20px;
+}
+
+input, button {
+    margin-top: 10px;
 }

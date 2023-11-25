@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,10 +10,23 @@
     <div class="container"> 
         <div class="top-title">
             <h1>Selecciona una estructura</h1>
-            <h1>Estructura seleccionada</h1>
-            <!---->
-            <!--Con un DOM se puede seleccionar y actualizar la estructura de datos seleccionada-->
+            <select id="dataStructureSelector">
+                <option value="linkedlist">Linked List</option>
+                <option value="queue">Queue</option>
+                <option value="stack">Stack</option>
+            </select>
+            
+            <button onclick="selectStructure()">Seleccionar</button>
+            
+            <h1 id="selectedStructureTitle">Estructura seleccionada: Ninguna</h1>
+            
+            <!-- TODO: Incluir elementos adicionales para las demás estructuras de datos -->
+            <div id="operationsSection">
+                <div id="operationResult"></div>
+            </div>
         </div>
     </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
