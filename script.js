@@ -134,22 +134,53 @@ function updateOperationsSection(selectedStructure) {
 
     if (selectedStructure === "linkedlist") {
         const inputField = document.createElement("input");
-        inputField.placeholder = "Element to append";
+        inputField.placeholder = "Añadir elemento";
         const addButton = document.createElement("button");
-        addButton.innerText = "Append";
+        addButton.innerText = "Añadir";
         addButton.onclick = function () {
             const element = inputField.value;
             linkedListInstance.append(element);
-            displayOperationResult(`Nodo creado con el elemento: ${element}`);
+            displayOperationResult(`Node created with the element: ${element}`);
             displayLinkedList();
         };
 
         operationsSection.appendChild(inputField);
         operationsSection.appendChild(addButton);
     }
-    // Otras estructuras de datos
 
-    // Función para mostrar el resultado de la operación
+    if (selectedStructure === "queue") {
+        const inputField = document.createElement("input");
+        inputField.placeholder = "Encolar elemento";
+        const addButton = document.createElement("button");
+        addButton.innerText = "Encolar";
+        addButton.onclick = function () {
+            const element = inputField.value;
+            queueInstance.enqueue(element);
+            displayOperationResult(`Node enqueued with the element: ${element}`);
+            displayQueue();
+        };
+
+        operationsSection.appendChild(inputField);
+        operationsSection.appendChild(addButton);
+    }
+
+    if (selectedStructure === "stack") {
+        const inputField = document.createElement("input");
+        inputField.placeholder = "Elemento a apilar";
+        const addButton = document.createElement("button");
+        addButton.innerText = "Apilar";
+        addButton.onclick = function () {
+            const element = inputField.value;
+            stackInstance.push(element);
+            displayOperationResult(`Node pushed with the element: ${element}`);
+            displayStack();
+        };
+
+        operationsSection.appendChild(inputField);
+        operationsSection.appendChild(addButton);
+    }
+
+    // Function to display the result of the operation
     function displayOperationResult(result) {
         const operationResult = document.getElementById("operationResult");
         operationResult.innerText = result;
@@ -169,5 +200,37 @@ function updateOperationsSection(selectedStructure) {
         }
 
         operationsSection.appendChild(linkedListDisplay);
+    }
+
+    // Para enseñar la cola jeje
+    function displayQueue() {
+        const queueDisplay = document.createElement("div");
+        queueDisplay.innerHTML = "<h2>Queue:</h2>";
+
+        let current = queueInstance.first;
+        while (current !== null) {
+            const nodeElement = document.createElement("div");
+            nodeElement.innerText = `Node: ${current.element}`;
+            queueDisplay.appendChild(nodeElement);
+            current = current.next;
+        }
+
+        operationsSection.appendChild(queueDisplay);
+    }
+
+    // Para mostrar la pila
+    function displayStack() {
+        const stackDisplay = document.createElement("div");
+        stackDisplay.innerHTML = "<h2>Stack:</h2>";
+
+        let current = stackInstance.first;
+        while (current !== null) {
+            const nodeElement = document.createElement("div");
+            nodeElement.innerText = `Node: ${current.element}`;
+            stackDisplay.appendChild(nodeElement);
+            current = current.next;
+        }
+
+        operationsSection.appendChild(stackDisplay);
     }
 }
