@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Cola</title>
+<style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      font-size: 1.5rem;
+    }
+  
+    #listaEnlazada {
+      margin: 0 auto;
+      border-collapse: collapse;
+      display: inline-block;
+    }
+  
+    #listaEnlazada td, #listaEnlazada th {
+      border: 1px solid #ddd;
+      padding: 8px;
+      box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.1);
+    }
+  
+    #listaEnlazada tr:nth-child(even){background-color: #f2f2f2;}
+  
+    #listaEnlazada tr:hover {background-color: #ddd;}
+  
+    button {
+      margin: 10px;
+      padding: 10px;
+      cursor: pointer;
+      background-color: black;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+  
+    button:hover {
+      background-color: grey;
+    }
+  
+    input[type="text"] {
+      padding: 10px;
+      margin: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+  </style>
+  
+<script>
+function updateIndices() {
+    var table = document.getElementById("listaEnlazada");
+    var rows = table.rows;
+    var numberOfRows = rows.length;
+
+    for (var i = 0; i < numberOfRows; i++) {
+        if (i === 0) {
+            rows[i].getElementsByClassName("cellIndex")[0].innerText = "Last";
+        } else if (i === numberOfRows - 1) {
+            rows[i].getElementsByClassName("cellIndex")[0].innerText = "First";
+        } else {
+            rows[i].getElementsByClassName("cellIndex")[0].innerText = i + 1;
+        }
+    }
+}
+
+function addRowAtBeginning() {
+    var table = document.getElementById("listaEnlazada");
+    var userInput = prompt("Introduzca un valor:");
+    if (userInput === null || userInput.trim() === "") {
+        alert("Por favor, introduzca un número válido.");
+        return;
+    }
+    var row = table.insertRow(0);
+    var cell1 = row.insertCell(0);
+    cell1.innerHTML = '<div class="cellContent">' + userInput + '</div><div class="cellIndex"></div>';
+    updateIndices();
+}
+
+function deleteList() {
+    var table = document.getElementById("listaEnlazada");
+    table.innerHTML = "";
+}
+
+function removeLastRow() {
+    var table = document.getElementById("listaEnlazada");
+    var rowCount = table.rows.length;
+    if(rowCount > 0) {
+        table.deleteRow(rowCount - 1);
+    }
+}
+
+</script>
+</head>
+<body>
+
+<div class="titulo">
+    <h1>Cola</h1>
+</div>
+
+<div class="botones">
+    <button onclick="addRowAtBeginning()">Encolar</button>
+    <button onclick="removeLastRow()">Desencolar</button>
+    <button onclick="deleteList()">Borrar cola</button>
+</div>
+
+<table id="listaEnlazada">
+    <!-- Aquí se muestran los elementos -->
+</table>
+
+</body>
+</html>

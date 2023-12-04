@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Lista enlazada</title>
+<style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      font-size: 1.5rem;
+    }
+
+    body .botones{
+        padding-bottom: 10%;
+    }
+  
+    #listaEnlazada {
+      margin: 0 auto;
+      border-collapse: collapse;
+    }
+  
+    #listaEnlazada td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .cellContent {
+      text-align: center;
+    }
+
+    .cellIndex {
+      font-size: 0.8rem;
+      color: grey;
+      margin-top: 4px;
+    }
+  
+    button {
+      margin: 10px;
+      padding: 10px;
+      cursor: pointer;
+      background-color: black;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+  
+    button:hover {
+      background-color: grey;
+    }
+  </style>
+  
+<script>
+    function updateIndices() {
+        var table = document.getElementById("listaEnlazada");
+        var cells = table.rows[0].cells;
+        var numberOfCells = cells.length;
+
+        for (var i = 0; i < numberOfCells; i++) {
+            cells[i].getElementsByClassName("cellIndex")[0].innerText = i + 1;
+
+            if (i === 0) {
+                cells[i].getElementsByClassName("cellIndex")[0].innerText = "Head (" + (i+1) + ")";
+            } 
+            if (i === numberOfCells - 1 && numberOfCells > 1) {
+                cells[i].getElementsByClassName("cellIndex")[0].innerText = "Tail (" + (i+1) + ")";
+            }
+        }
+
+        // En caso de que haya solo un elemento, este será tanto la cabeza como la cola
+        if (numberOfCells === 1) {
+            cells[0].getElementsByClassName("cellIndex")[0].innerText = "Head & Tail";
+        }
+    }
+
+function addElementAtEnd() {
+    var table = document.getElementById("listaEnlazada");
+    var row = table.rows[0];
+    var userInput = prompt("Introduzca un valor:");
+    if (userInput === null || userInput.trim() === "") {
+        alert("Por favor, introduzca un número válido.");
+        return;
+    }
+    var cell = row.insertCell(-1);
+    cell.innerHTML = '<div class="cellContent">' + userInput + '</div><div class="cellIndex"></div>';
+    updateIndices();
+}
+
+function addElementAtBeginning() {
+    var table = document.getElementById("listaEnlazada");
+    var row = table.rows[0];
+    var userInput = prompt("Introduzca un valor:");
+    if (userInput === null || userInput.trim() === "") {
+        alert("Por favor, introduzca un número válido.");
+        return;
+    }
+    var cell = row.insertCell(0);
+    cell.innerHTML = '<div class="cellContent">' + userInput + '</div><div class="cellIndex"></div>';
+    updateIndices();
+}
+
+function deleteList() {
+    var table = document.getElementById("listaEnlazada");
+    var row = table.rows[0];
+    row.innerHTML = "";
+}
+
+function removeLastElement() {
+    var table = document.getElementById("listaEnlazada");
+    var row = table.rows[0];
+    if(row.cells.length > 0) {
+        row.deleteCell(row.cells.length - 1);
+    }
+    updateIndices();
+}
+
+function removeFirstElement() {
+    var table = document.getElementById("listaEnlazada");
+    var row = table.rows[0];
+    if(row.cells.length > 0) {
+        row.deleteCell(0);
+    }
+    updateIndices();
+}
+
+function removeElementByPosition() {
+    var position = prompt("Introduzca la posición del elemento:");
+    var table = document.getElementById("listaEnlazada");
+    var row = table.rows[0];
+    position--;
+    if (position === null) {
+        return;
+    }
+    try {
+        if(parseInt(position) < row.cells.length) {
+            row.deleteCell(parseInt(position));
+        } else {
+            alert("La posición está fuera de rango.");
+        }
+    } catch (error) {
+        alert("Ocurrió un error. Asegúrese de ingresar una posición válida.");
+    }
+    updateIndices();
+}
+</script>
+</head>
+<body>
+
+<div class="titulo">
+    <h1>Lista enlazada</h1>
+</div>
+
+<div class="botones">
+    <button onclick="addElementAtBeginning()">Añadir valor al principio</button>
+    <button onclick="addElementAtEnd()">Añadir valor al final</button>
+    <button onclick="deleteList()">Borrar lista</button>
+    <button onclick="removeFirstElement()">Remover primer elemento</button>
+    <button onclick="removeLastElement()">Remover último elemento</button>
+    <button onclick="removeElementByPosition()">Remover elemento por posición</button>
+</div>
+
+<table id="listaEnlazada">
+    <tr>
+    </tr>
+</table>
+
+</body>
+</html>
