@@ -1,13 +1,145 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        
+
+        body {
+            font-family: 'Lobster', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+        }
+
+        header {
+            background-color: #000000;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            position: relative; /* Para posicionar la imagen respecto al encabezado */
+        }
+
+        header img {
+            max-width: 104px;
+            height: auto;
+            position: absolute; /* Posicionamiento absoluto dentro del encabezado */
+            left: 50px; /* 20px desde el borde izquierdo del encabezado */
+            top: 50%;
+            transform: translateY(-50%); /* Centrar verticalmente */
+        }
+        
+        header p {
+            margin: 0;
+            font-size: 40px; /* Tamaño más grande para el texto */
+            font-weight: bold; /* Texto en negritas */
+        }
+        
+
+        .fila-divs {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 150px 0;
+        }
+
+        .enlace-imagen {
+            width: 100px;
+            height: 600px;
+            transition: transform 0.3s ease;
+        }
+
+        .enlace-imagen:hover {
+            transform: scale(1.1);
+        }
+
+        a {
+            color: #000000;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #000000;
+        }
+
+        select {
+            padding: 200px;
+            border-radius: 5px;
+            border: 1px solid #000000;
+            background-color: white;
+        }
+
+        @media (max-width: 600px) {
+            .fila-divs {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+            .enlace-imagen {
+                width: 300px;
+                height: 300px;
+            }
+
+            .info-alumnos {
+    flex: 2 2 30%;
+    margin: 50px;
+    height: auto;
+    position: relative;
+    background: url('ruta_a_tu_imagen.jpg') no-repeat center center; /* Imagen de fondo */
+    background-size: cover;
+}
+
+.info-alumnos::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7); /* Desvanecido negro al 70% */
+    z-index: 1;
+}
+
+.contenedor-info {
+    position: relative;
+    z-index: 2; /* Para asegurarse de que el texto aparezca sobre la capa desvanecida */
+    color: white; /* Cambia el color del texto si es necesario */
+    padding: 20px; /* Añade padding si lo necesitas */
+}     
+    </style>
 </head>
 <body>
-    <a href="Estructuras/lista.html"> Lista enlazada </a>
-    <a href="Estructuras/cola.html"> Cola </a>
-    <a href="Estructuras/pila.html"> Pila </a>
+    <header>
+        <img src="img.png" alt="Imagen descriptiva">
+        <p>SELECCIONA UNA OPCION</p>
+         <!-- Más opciones aquí -->
+        </select>
+    </header>
+
+    <section class="imagenes">
+    <div class="fila-divs">
+        <a href="Estructuras/lista.html"><img src="2.png" alt="Lista" class="enlace-imagen"></a>
+        <a href="Estructuras/cola.html"><img src="3.png" alt="Cola" class="enlace-imagen"></a>
+        <a href="Estructuras/pila.html"><img src="4.png" alt="Pila" class="enlace-imagen"></a>
+    </div>
+</section>
+
+<section class="info-alumnos">
+    <div class="contenedor-info">
+        <h2>Información de los Alumnos</h2>
+       
+        <p>Haniel Ulises Vásquez Morales</p>
+        <p>Adair Lopez Sanchez</p>
+        
+    </div>
+</section>
+
+    
+
 </body>
 </html>
