@@ -8,6 +8,16 @@
       font-family: Arial, sans-serif;
       font-size: 1.5rem;
     }
+
+    .main {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .code {
+      text-align: left;
+      margin-top: 30px;
+    }
   
     #listaEnlazada {
       margin: 0 auto;
@@ -45,68 +55,242 @@
       border: 1px solid #ddd;
       border-radius: 5px;
     }
+
+    .tab {
+        margin-top: 20px;
+        cursor: pointer;
+        padding: 10px;
+        border: 1px solid #ccc;
+        display: inline-block;
+        background-color: #f1f1f1;
+    }
+
+    .active {
+      background-color: white;
+      border-bottom: none;
+    }
+
+    .code-container {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: -1px;
+        font-size: 20px;
+
+    }
+
+    .code-container pre {
+        text-align: left;
+        font-family: 'Consolas', 'Courier New', monospace;
+        white-space: pre-wrap;
+    }
+
+    .code-block {
+        display: none;
+    }
+
+    .code-block.active {
+        display: block;
+    }
   </style>
   
 <script>
-function updateIndices() {
-    var table = document.getElementById("listaEnlazada");
-    var rows = table.rows;
-    var numberOfRows = rows.length;
+  function updateIndices() {
+      var table = document.getElementById("listaEnlazada");
+      var rows = table.rows;
+      var numberOfRows = rows.length;
 
-    for (var i = 0; i < numberOfRows; i++) {
-        if (i === 0) {
-            rows[i].getElementsByClassName("cellIndex")[0].innerText = "Last";
-        } else if (i === numberOfRows - 1) {
-            rows[i].getElementsByClassName("cellIndex")[0].innerText = "First";
-        } else {
-            rows[i].getElementsByClassName("cellIndex")[0].innerText = i + 1;
-        }
-    }
-}
+      for (var i = 0; i < numberOfRows; i++) {
+          if (i === 0) {
+              rows[i].getElementsByClassName("cellIndex")[0].innerText = "Last";
+          } else if (i === numberOfRows - 1) {
+              rows[i].getElementsByClassName("cellIndex")[0].innerText = "First";
+          } else {
+              rows[i].getElementsByClassName("cellIndex")[0].innerText = i + 1;
+          }
+      }
+  }
 
-function addRowAtBeginning() {
-    var table = document.getElementById("listaEnlazada");
-    var userInput = prompt("Introduzca un valor:");
-    if (userInput === null || userInput.trim() === "") {
-        alert("Por favor, introduzca un número válido.");
-        return;
-    }
-    var row = table.insertRow(0);
-    var cell1 = row.insertCell(0);
-    cell1.innerHTML = '<div class="cellContent">' + userInput + '</div><div class="cellIndex"></div>';
-    updateIndices();
-}
+  function addRowAtBeginning() {
+      var table = document.getElementById("listaEnlazada");
+      var userInput = prompt("Introduzca un valor:");
+      if (userInput === null || userInput.trim() === "") {
+          alert("Por favor, introduzca un número válido.");
+          return;
+      }
+      var row = table.insertRow(0);
+      var cell1 = row.insertCell(0);
+      cell1.innerHTML = '<div class="cellContent">' + userInput + '</div><div class="cellIndex"></div>';
+      updateIndices();
+  }
 
-function deleteList() {
-    var table = document.getElementById("listaEnlazada");
-    table.innerHTML = "";
-}
+  function deleteList() {
+      var table = document.getElementById("listaEnlazada");
+      table.innerHTML = "";
+  }
 
-function removeLastRow() {
-    var table = document.getElementById("listaEnlazada");
-    var rowCount = table.rows.length;
-    if(rowCount > 0) {
-        table.deleteRow(rowCount - 1);
-    }
-}
+  function removeLastRow() {
+      var table = document.getElementById("listaEnlazada");
+      var rowCount = table.rows.length;
+      if(rowCount > 0) {
+          table.deleteRow(rowCount - 1);
+      }
+  }
 
+  function openTab(evt, tabName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("code-block");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tab");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(tabName).style.display = "block";
+      evt.currentTarget.className += " active";
+  }
 </script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
 </head>
 <body>
-
-<div class="titulo">
+<div class="main">
+  <div class="titulo">
     <h1>Cola</h1>
+  </div>
+
+  <div class="botones">
+      <button onclick="addRowAtBeginning()">Encolar</button>
+      <button onclick="removeLastRow()">Desencolar</button>
+      <button onclick="deleteList()">Borrar cola</button>
+  </div>
+
+  <table id="listaEnlazada">
+      <!-- Aquí se muestran los elementos -->
+  </table>
 </div>
 
-<div class="botones">
-    <button onclick="addRowAtBeginning()">Encolar</button>
-    <button onclick="removeLastRow()">Desencolar</button>
-    <button onclick="deleteList()">Borrar cola</button>
+<div class="code">
+  <div class="tab" onclick="openTab(event, 'h-file')">.h File</div>
+  <div class="tab" onclick="openTab(event, 'c-file')">.c File</div>
+  
+  <div id="h-file" class="code-container code-block">
+    <pre><code class="language-c">
+        #ifndef QUEUE_H
+        #define QUEUE_H
+  
+        #include <stdlib.h>
+  
+        // Tipo de elemento para simular genéricos con C
+        typedef int QueueElementType;
+  
+        typedef struct QueueNode {
+            QueueElementType data;
+            struct QueueNode *next;
+        } QueueNode;
+  
+        typedef struct Queue {
+            QueueNode *front;
+            QueueNode *last;
+            int size;
+        } Queue;
+  
+        // Métodos de una cola
+        // Crear una nueva cola
+        Queue* createQueue();
+        // Verificar que la cola esté vacía
+        int isQueueEmpty(Queue *queue);
+        // Encolar elemento
+        void enqueue(Queue *queue, QueueElementType element);
+        // Desencolar elemento
+        QueueElementType dequeue(Queue *queue);
+        // Devuelve el elemento de enfrente
+        QueueElementType front(Queue *queue);
+        // Elimina la cola
+        void destroyQueue(Queue *queue);
+  
+        #endif // QUEUE_H
+  
+    </code></pre>
+  </div>
+  
+  <div id="c-file" class="code-container code-block">
+    <pre><code class="language-c">
+          #include "queue.h"
+  
+          Queue* createQueue() {
+              Queue *queue = (Queue*)malloc(sizeof(Queue));
+              if (queue == NULL) {
+                  return NULL; 
+              }
+              queue->front = queue->last = NULL;
+              queue->size = 0;
+              return queue;
+          }
+  
+          int isQueueEmpty(Queue *queue) {
+              return (queue == NULL || queue->size == 0);
+          }
+  
+          void enqueue(Queue *queue, QueueElementType element) {
+              if (queue == NULL) {
+                  return;
+              }
+  
+              QueueNode *newNode = (QueueNode*)malloc(sizeof(QueueNode));
+              if (newNode == NULL) {
+                  return;
+              }
+              newNode->data = element;
+              newNode->next = NULL;
+  
+              if (queue->last == NULL) {
+                  queue->front = queue->last = newNode;
+              } else {
+                  queue->last->next = newNode;
+                  queue->last = newNode;
+              }
+              queue->size++;
+          }
+  
+          QueueElementType dequeue(Queue *queue) {
+              if (isQueueEmpty(queue)) {
+                  return 0;
+              }
+  
+              QueueNode *temp = queue->front;
+              QueueElementType data = temp->data;
+  
+              queue->front = queue->front->next;
+              if (queue->front == NULL) {
+                  queue->last = NULL;
+              }
+  
+              free(temp);
+              queue->size--;
+              return data;
+          }
+  
+          QueueElementType front(Queue *queue) {
+              if (isQueueEmpty(queue)) {
+                  return 0;
+              }
+              return queue->front->data;
+          }
+  
+          void destroyQueue(Queue *queue) {
+              while (!isQueueEmpty(queue)) {
+                  dequeue(queue);
+              }
+              free(queue);
+          }
+  
+    </code></pre>
+  </div>
 </div>
 
-<table id="listaEnlazada">
-    <!-- Aquí se muestran los elementos -->
-</table>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>
+      hljs.highlightAll();
+  </script>
 </body>
 </html>

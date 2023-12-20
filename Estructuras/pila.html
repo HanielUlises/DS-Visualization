@@ -3,15 +3,26 @@
 <head>
 <title>Stack</title>
 <style>
-    body {
+     body {
       text-align: center;
       font-family: Arial, sans-serif;
       font-size: 1.5rem;
+    }
+
+    .main-content {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .code-section {
+      text-align: left;
+      margin-top: 30px;
     }
   
     #listaEnlazada {
       margin: 0 auto;
       border-collapse: collapse;
+      display: inline-block;
     }
   
     #listaEnlazada td, #listaEnlazada th {
@@ -43,6 +54,42 @@
       margin: 10px;
       border: 1px solid #ddd;
       border-radius: 5px;
+    }
+
+    .tab {
+        margin-top: 20px;
+        cursor: pointer;
+        padding: 10px;
+        border: 1px solid #ccc;
+        display: inline-block;
+        background-color: #f1f1f1;
+    }
+
+    .active {
+      background-color: white;
+      border-bottom: none;
+    }
+
+    .code-container {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: -1px;
+        font-size: 20px;
+
+    }
+
+    .code-container pre {
+        text-align: left;
+        font-family: 'Consolas', 'Courier New', monospace;
+        white-space: pre-wrap;
+    }
+
+    .code-block {
+        display: none;
+    }
+
+    .code-block.active {
+        display: block;
     }
   </style>
   
@@ -100,26 +147,148 @@ function removeLastRow() {
     var rowCount = table.rows.length;
     table.deleteRow(0);
 }
+
+function openTab(evt, tabName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("code-block");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tab");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(tabName).style.display = "block";
+      evt.currentTarget.className += " active";
+}
+
 </script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
 </head>
 <body>
 
-<div class="titulo">
-    <h1>Fila</h1>
+<div class="main-content">
+    <div class="titulo">
+        <h1>Pila</h1>
+    </div>
+
+    <div class="botones">
+        <button onclick="addRowAtEnd()">Apilar</button>
+        <button onclick="deleteStack()">Borrar pila</button>
+        <button onclick="removeLastRow()">Desapilar</button>
+    </div>
+
+    <table id="listaEnlazada">
+        <!-- Stack -->
+    </table>
+    </div>
+
+    <!-- Code Display Section -->
+<div class="code-section">
+    <div class="tab" onclick="openTab(event, 'h-file')">.h File</div>
+    <div class="tab" onclick="openTab(event, 'c-file')">.c File</div>
+
+    <div id="h-file" class="code-container code-block">
+    <pre><code class="language-c">
+        #ifndef STACK_H
+        #define STACK_H
+        
+        #include <stdlib.h>
+        
+        // Tipo de elemento para simular genéricos con C
+        typedef int StackElement;
+        
+        typedef struct Node {
+            StackElement data;
+            struct Node *next;
+        } Node;
+        
+        typedef struct Stack {
+            Node *front;
+            Node *top;
+            int size;
+        } Stack;
+        
+        // Métodos de una pila
+        // Crear una nueva pila
+        Stack* createStack();
+        // Verificar que la pila esté vacía
+        int isStackEmpty(Stack *stack);
+        // Apilar elemento
+        void push (Stack *stack, StackElement element);
+        // Desapilar elemento
+        StackElement pop (Stack *stack);
+        // Devuelve el elemento hasta arriba de la pila (top)
+        StackElement front(Stack *stack);
+        // Elimina la pila
+        void destroyStack(Stack *stack);
+        
+        #endif // STACK_H            
+    </code></pre>
 </div>
 
-<div class="botones">
-    <button onclick="addRowAtEnd()">Apilar</button>
-    <button onclick="deleteStack()">Borrar pila</button>
-    <button onclick="removeLastRow()">Desapilar</button>
+<div id="c-file" class="code-container code-block">
+    <pre><code class="language-c">
+        #include "stack.h"
+
+        Stack* createStack(){
+            Stack *stack = (Stack*)malloc(sizeof(Stack));
+            if (stack == NULL) {
+                return NULL; 
+            }
+            stack->front = stack->top = NULL;
+            stack->size = 0;
+            return stack;
+        }
+        
+        int isStackEmpty(Stack *stack){
+            return (stack == NULL || stack->size == 0);
+        }
+        
+        void push (Stack *stack, StackElement element) {
+            if (stack == NULL) {
+                return;
+            }
+        
+            Node *newNode = (Node*)malloc(sizeof(Node));
+            if (newNode == NULL) {
+                return;
+            }
+            newNode->data = element;
+            newNode->next = NULL;
+        
+            if (stack->top == NULL) {
+                stack->front = stack->top = newNode;
+            } else {
+                stack->top->next = newNode;
+                stack->top = newNode;
+            }
+            stack->size++;
+        }
+        
+        StackElement pop (Stack *stack){
+            if (isStackEmpty(stack)) {
+                return 0;
+            }
+        
+            Node *temp = stack->top;
+            StackElement data = temp->data;
+        
+            stack->top = stack->top->next;
+            if (stack->top == NULL) {
+                stack->front = NULL;
+            }
+        
+            free(temp);
+            stack->size--;
+            return data;
+        }
+    </code></pre>
 </div>
-
-
-<table id="listaEnlazada">
-    <tr>
-        <!-- Aquí se muestran los elementos -->
-    </tr>
-</table>
-
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+    hljs.highlightAll();
+</script>
 </body>
 </html>
