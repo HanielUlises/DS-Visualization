@@ -56,6 +56,8 @@
         border: 1px solid #ccc;
         display: inline-block;
         background-color: #f1f1f1;
+        font-size: 15px;
+        color: grey;
     }
 
     .active {
@@ -83,6 +85,25 @@
     .code-block.active {
         display: block;
     }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+    }
+
+    .fade-in {
+        animation: fadeIn 0.5s;
+    }
+
+    .fade-out {
+        animation: fadeOut 0.5s;
+    }
+
   </style>
   
 <script>
@@ -117,6 +138,7 @@
             return;
         }
         var cell = row.insertCell(-1);
+        cell.className = 'fade-in';
         cell.innerHTML = '<div class="cellContent">' + userInput + '</div><div class="cellIndex"></div>';
         updateIndices();
     }
@@ -130,6 +152,7 @@
             return;
         }
         var cell = row.insertCell(0);
+        cell.className = 'fade-in';
         cell.innerHTML = '<div class="cellContent">' + userInput + '</div><div class="cellIndex"></div>';
         updateIndices();
     }
@@ -144,18 +167,26 @@
         var table = document.getElementById("listaEnlazada");
         var row = table.rows[0];
         if(row.cells.length > 0) {
-            row.deleteCell(row.cells.length - 1);
+            var lastCell = row.cells[row.cells.length - 1];
+            lastCell.className = 'fade-out';
+            setTimeout(function() {
+                row.deleteCell(row.cells.length - 1);
+                updateIndices();
+            }, 500);
         }
-        updateIndices();
     }
 
     function removeFirstElement() {
         var table = document.getElementById("listaEnlazada");
         var row = table.rows[0];
         if(row.cells.length > 0) {
-            row.deleteCell(0);
+            var firstCell = row.cells[0];
+            firstCell.className = 'fade-out';
+            setTimeout(function() {
+                row.deleteCell(0);
+                updateIndices();
+            }, 500);
         }
-        updateIndices();
     }
 
     function removeElementByPosition() {
@@ -168,12 +199,17 @@
         }
         try {
             if(parseInt(position) < row.cells.length) {
-                row.deleteCell(parseInt(position));
-            } else {
-                alert("La posición está fuera de rango.");
+                var cell = row.cells[parseInt(position)];
+                cell.className = 'fade-out';
+                setTimeout(function() {
+                    row.deleteCell(parseInt(position));
+                    updateIndices();
+                }, 500);
+            }else {
+                alert("La posición está fuera de rango\n O no es válida.");
             }
         } catch (error) {
-            alert("Ocurrió un error. Asegúrese de ingresar una posición válida.");
+            alert("Asegúrese de ingresar una posición válida.");
         }
         updateIndices();
     }
@@ -216,9 +252,9 @@
     </tr>
 </table>
 
-<div class="tab" onclick="openTab(event, 'h-file')">.h File</div>
+<div class="tab" onclick="openTab(event, 'h-file')">Definiciones</div>
   
-<div class="tab" onclick="openTab(event, 'c-file')">.c File</div>
+<div class="tab" onclick="openTab(event, 'c-file')">Implementación</div>
 
 <div id="h-file" class="code-container code-block">
     <pre><code>

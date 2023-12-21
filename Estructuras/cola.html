@@ -35,6 +35,17 @@
   
     #listaEnlazada tr:hover {background-color: #ddd;}
   
+    .cellContent {
+      text-align: center;
+    }
+
+    .cellIndex {
+      font-size: 0.8rem;
+      color: grey;
+      margin-top: 4px;
+    }
+  
+
     button {
       margin: 10px;
       padding: 10px;
@@ -63,6 +74,8 @@
         border: 1px solid #ccc;
         display: inline-block;
         background-color: #f1f1f1;
+        font-size: 15px;
+        color: grey;
     }
 
     .active {
@@ -91,6 +104,24 @@
     .code-block.active {
         display: block;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s;
+    }
+
+    .fade-out {
+      animation: fadeOut 0.5s;
+    }
   </style>
   
 <script>
@@ -101,11 +132,11 @@
 
       for (var i = 0; i < numberOfRows; i++) {
           if (i === 0) {
-              rows[i].getElementsByClassName("cellIndex")[0].innerText = "Last";
+            rows[i].getElementsByClassName("cellIndex")[0].innerText = "Last";
           } else if (i === numberOfRows - 1) {
-              rows[i].getElementsByClassName("cellIndex")[0].innerText = "First";
+            rows[i].getElementsByClassName("cellIndex")[0].innerText = "First";
           } else {
-              rows[i].getElementsByClassName("cellIndex")[0].innerText = i + 1;
+            rows[i].getElementsByClassName("cellIndex")[0].innerText = numberOfRows - i;
           }
       }
   }
@@ -118,22 +149,27 @@
           return;
       }
       var row = table.insertRow(0);
+      row.className = 'fade-in';
       var cell1 = row.insertCell(0);
       cell1.innerHTML = '<div class="cellContent">' + userInput + '</div><div class="cellIndex"></div>';
       updateIndices();
   }
-
   function deleteList() {
       var table = document.getElementById("listaEnlazada");
       table.innerHTML = "";
   }
 
   function removeLastRow() {
-      var table = document.getElementById("listaEnlazada");
-      var rowCount = table.rows.length;
-      if(rowCount > 0) {
-          table.deleteRow(rowCount - 1);
-      }
+    var table = document.getElementById("listaEnlazada");
+    var rowCount = table.rows.length;
+    if (rowCount > 0) {
+        var lastRow = table.rows[rowCount - 1];
+        lastRow.className = 'fade-out';
+        setTimeout(function() {
+            table.deleteRow(rowCount - 1);
+            updateIndices();
+        }, 500);
+    }
   }
 
   function openTab(evt, tabName) {
@@ -170,8 +206,9 @@
 </div>
 
 <div class="code">
-  <div class="tab" onclick="openTab(event, 'h-file')">.h File</div>
-  <div class="tab" onclick="openTab(event, 'c-file')">.c File</div>
+  <div class="tab" onclick="openTab(event, 'h-file')">Definiciones</div>
+  
+  <div class="tab" onclick="openTab(event, 'c-file')">Implementación</div>
   
   <div id="h-file" class="code-container code-block">
     <pre><code class="language-c">

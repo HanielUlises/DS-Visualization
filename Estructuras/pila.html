@@ -34,7 +34,13 @@
     #listaEnlazada tr:nth-child(even){background-color: #f2f2f2;}
   
     #listaEnlazada tr:hover {background-color: #ddd;}
-  
+
+    .cellIndex {
+        font-size: 0.8rem;
+        color: grey;
+        margin-top: 4px;
+    }
+
     button {
       margin: 10px;
       padding: 10px;
@@ -63,7 +69,10 @@
         border: 1px solid #ccc;
         display: inline-block;
         background-color: #f1f1f1;
+        font-size: 15px;
+        color: grey;
     }
+
 
     .active {
       background-color: white;
@@ -91,6 +100,25 @@
     .code-block.active {
         display: block;
     }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+    }
+
+    .fade-in {
+        animation: fadeIn 0.5s;
+    }
+
+    .fade-out {
+        animation: fadeOut 0.5s;
+    }
+
   </style>
   
 <script>
@@ -102,11 +130,11 @@ function updateIndices() {
 
     for (var i = 0; i < numberOfRows; i++) {
         if (i === 0) {
-            rows[i].getElementsByClassName("cellIndex")[0].innerText = "Last";
+            rows[i].getElementsByClassName("cellIndex")[0].innerText = "Top\n(Last)";
         } else if (i === numberOfRows - 1) {
             rows[i].getElementsByClassName("cellIndex")[0].innerText = "First";
         } else {
-            rows[i].getElementsByClassName("cellIndex")[0].innerText = i + 1;
+            rows[i].getElementsByClassName("cellIndex")[0].innerText = numberOfRows - i;
         }
     }
 }
@@ -119,22 +147,10 @@ function addRowAtEnd() {
         return;
     }
     var row = table.insertRow(0);
+    row.className = 'fade-in';
     var cell1 = row.insertCell(0);
     cell1.innerHTML = '<div class="cellContent">' + userInput + '</div><div class="cellIndex"></div>';
     updateIndices();
-}
-
-function addRowAtBeginning() {
-    var table = document.getElementById("listaEnlazada");
-    var userInput = prompt("Introduzca un valor:");
-    if (userInput === null || userInput.trim() === "") {
-        alert("Por favor, introduzca un número válido.");
-        return;
-    }
-    var rowCount = table.rows.length;
-    var newRow = table.insertRow(rowCount);
-    var newCell = newRow.insertCell(0);
-    newCell.innerHTML = userInput;
 }
 
 function deleteStack() {
@@ -144,8 +160,14 @@ function deleteStack() {
 
 function removeLastRow() {
     var table = document.getElementById("listaEnlazada");
-    var rowCount = table.rows.length;
-    table.deleteRow(0);
+    if (table.rows.length > 0) {
+        var firstRow = table.rows[0];
+        firstRow.className = 'fade-out';
+        setTimeout(function() {
+            table.deleteRow(0);
+            updateIndices();
+        }, 500);
+    }
 }
 
 function openTab(evt, tabName) {
@@ -174,8 +196,8 @@ function openTab(evt, tabName) {
 
     <div class="botones">
         <button onclick="addRowAtEnd()">Apilar</button>
-        <button onclick="deleteStack()">Borrar pila</button>
         <button onclick="removeLastRow()">Desapilar</button>
+        <button onclick="deleteStack()">Borrar pila</button>
     </div>
 
     <table id="listaEnlazada">
@@ -185,8 +207,9 @@ function openTab(evt, tabName) {
 
     <!-- Code Display Section -->
 <div class="code-section">
-    <div class="tab" onclick="openTab(event, 'h-file')">.h File</div>
-    <div class="tab" onclick="openTab(event, 'c-file')">.c File</div>
+    <div class="tab" onclick="openTab(event, 'h-file')">Definiciones</div>
+  
+    <div class="tab" onclick="openTab(event, 'c-file')">Implementación</div>
 
     <div id="h-file" class="code-container code-block">
     <pre><code class="language-c">
