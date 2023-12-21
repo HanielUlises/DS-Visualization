@@ -16,7 +16,7 @@
         }
 
         header {
-            background-color: #000000;
+            background-color: rgba(8,8,8,255);
             color: white;
             text-align: center;
             padding: 30px 0;
@@ -36,8 +36,8 @@
         }
         header p {
             margin: 0;
-            font-size: 20px; /* Tamaño más grande para el texto */
-            font-weight: bold; /* Texto en negritas */
+            font-size: 20px;
+            font-weight: bold; 
         }
         
 
@@ -88,13 +88,14 @@
             }
 
             .info-alumnos {
-    flex: 2 2 30%;
-    margin: 50px;
-    height: auto;
-    position: relative;
-    background: url('ruta_a_tu_imagen.jpg') no-repeat center center; /* Imagen de fondo */
-    background-size: cover;
-}
+                text-align: center;
+                flex: 2 2 30%;
+                margin: 50px;
+                height: auto;
+                position: relative;
+                background: url('binary.png') no-repeat center center;
+                background-size: cover;
+            }
 
 .info-alumnos::before {
     content: '';
@@ -112,14 +113,36 @@
     z-index: 2; /* Para asegurarse de que el texto aparezca sobre la capa desvanecida */
     color: white; /* Cambia el color del texto si es necesario */
     padding: 20px; /* Añade padding si lo necesitas */
-}     
-    </style>
+}
+@keyframes pulse {
+    0% { 
+        transform: scale(1); 
+        opacity: 1; 
+    }
+    50% { 
+        transform: scale(1.1); 
+        opacity: 0.7; 
+    }
+    100% { 
+        transform: scale(1); 
+        opacity: 1; 
+    }
+}
+
+.animated-text {
+    animation: pulse 2s infinite;
+    display: inline-block;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+</style>
 </head>
 <body>
     <header>
         <img src="img.png" alt="Imagen descriptiva">
         <h1>Estructuras de datos lineales</h1>
-        <p>SELECCIONA UNA OPCIÓN</p>
+        <p class="animated-text">SELECCIONA UNA OPCIÓN</p>
         </select>
     </header>
 
