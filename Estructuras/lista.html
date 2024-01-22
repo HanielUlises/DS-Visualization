@@ -10,8 +10,6 @@
         font-size: 1.5rem;
     }
 
-    
-
     body .botones{
         padding-bottom: 10%;
     }
@@ -150,170 +148,167 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
 
 </head>
-<body>
-
-<div class="main-content">
-    <div class="titulo">
-        <h1>Lista enlazada</h1>
-    </div>
-    
-    <div class="botones">
-        <button onclick="addElementAtBeginning()">Añadir valor al principio</button>
-        <button onclick="addElementAtEnd()">Añadir valor al final</button>
-        <button onclick="deleteList()">Borrar lista</button>
-        <button onclick="removeFirstElement()">Remover primer elemento</button>
-        <button onclick="removeLastElement()">Remover último elemento</button>
-        <button onclick="removeElementByPosition()">Remover elemento por posición</button>
-    </div>
-    
-    <table id="listaEnlazada">
-        <tr>
-        </tr>
-    </table>
-</div>
-
-<div class="code-section">
-    <div class = "code-title"><h1>Código en C99</h1></div>
-    <div class="tab" onclick="openTab(event, 'h-file')">Definiciones</div>
-      
-    <div class="tab" onclick="openTab(event, 'c-file')">Implementación</div>
-    
-    <div id="h-file" class="code-container code-block">
-        <pre><code>
-            #ifndef LIST_H
-            #define LIST_H
-            
-            #include <stdlib.h>
-            
-            typedef int listElement;
-            
-            typedef struct Node{
-                Node* next;
-                Node* prev;
-                listElement data;
-            }Node;
-            
-            typedef struct LinkedList{
-                Node* head;
-                Node* tail;
-                int length;
-            }LinkedList;
-            
-            LinkedList* createLinkedList();
-            void append(LinkedList* list, listElement data);
-            void prepend(LinkedList* list, listElement data);
-            void insertAfter(LinkedList* list, Node* node, listElement data) ;
-            void deleteNode(LinkedList* list, Node* node);
-            void printLinkedList(LinkedList* list);
-            int getLength(LinkedList* list);
-            
-            #endif // LIST_H
-        </code></pre>
-    </div>
-    <div id="c-file" class="code-container code-block">
-        <pre><code>
-            #include "list.h"
-            #include "list.h"
-            
-            LinkedList* createLinkedList() {
-                LinkedList* newList = (LinkedList*)malloc(sizeof(LinkedList));
-                if (newList != NULL) {
-                    newList->head = NULL;
-                    newList->tail = NULL;
-                    newList->length = 0;
-                }
-                return newList;
-            }
-            
-            void append(LinkedList* list, listElement data) {
-                Node* newNode = (Node*)malloc(sizeof(Node));
-                if (newNode != NULL) {
-                    newNode->data = data;
-                    newNode->next = NULL;
-                    newNode->prev = list->tail;
-            
-                    if (list->tail == NULL) {
-                        list->head = newNode;
-                    } else {
-                        list->tail->next = newNode;
-                    }
-            
-                    list->tail = newNode;
-                    list->length++;
-                }
-            }
-            
-            void prepend(LinkedList* list, listElement data) {
-                Node* newNode = (Node*)malloc(sizeof(Node));
-                if (newNode != NULL) {
-                    newNode->data = data;
-                    newNode->prev = NULL;
-                    newNode->next = list->head;
-            
-                    if (list->head == NULL) {
-                        list->tail = newNode;
-                    } else {
-                        list->head->prev = newNode;
-                    }
-            
-                    list->head = newNode;
-                    list->length++;
-                }
-            }
-            
-            void insertAfter(LinkedList* list, Node* node, listElement data) {
-                Node* newNode = (Node*)malloc(sizeof(Node));
-                if (newNode != NULL) {
-                    newNode->data = data;
-                    newNode->prev = node;
-                    newNode->next = node->next;
-            
-                    if (node->next != NULL) {
-                        node->next->prev = newNode;
-                    }
-            
-                    node->next = newNode;
-                    list->length++;
-                }
-            }
-            
-            void deleteNode(LinkedList* list, Node* node) {
-                if (node->prev != NULL) {
-                    node->prev->next = node->next;
-                } else {
-                    list->head = node->next;
-                }
-            
-                if (node->next != NULL) {
-                    node->next->prev = node->prev;
-                } else {
-                    list->tail = node->prev;
-                }
-            
-                free(node);
-                list->length--;
-            }
-            
-            void printLinkedList(LinkedList* list) {
-                Node* current = list->head;
-                while (current != NULL) {
-                    printf("%d ", current->data);
-                    current = current->next;
-                }
-                printf("\n");
-            }
-            
-            int getLength(LinkedList* list) {
-                return list->length;
-            }
-        </code></pre>
+<body class="fade-in">
+    <div class="main-content">
+        <div class="titulo">
+            <h1>Lista enlazada</h1>
         </div>
-</div>
+        
+        <div class="botones">
+            <button onclick="addElementAtBeginning()">Añadir valor al principio</button>
+            <button onclick="addElementAtEnd()">Añadir valor al final</button>
+            <button onclick="deleteList()">Borrar lista</button>
+            <button onclick="removeFirstElement()">Remover primer elemento</button>
+            <button onclick="removeLastElement()">Remover último elemento</button>
+            <button onclick="removeElementByPosition()">Remover elemento por posición</button>
+        </div>
+        
+        <table id="listaEnlazada">
+            <tr>
+            </tr>
+        </table>
+    </div>
 
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-<script>
-    hljs.highlightAll();
-</script>
+    <div class="code-section">
+        <div class = "code-title"><h1>Código en C99</h1></div>
+        <div class="tab" onclick="openTab(event, 'h-file')">Definiciones</div>
+        
+        <div class="tab" onclick="openTab(event, 'c-file')">Implementación</div>
+        
+        <div id="h-file" class="code-container code-block">
+            <pre><code>
+                #ifndef LIST_H
+                #define LIST_H
+                
+                #include <stdlib.h>
+                
+                typedef int listElement;
+                
+                typedef struct Node{
+                    Node* next;
+                    Node* prev;
+                    listElement data;
+                }Node;
+                
+                typedef struct LinkedList{
+                    Node* head;
+                    Node* tail;
+                    int length;
+                }LinkedList;
+                
+                LinkedList* createLinkedList();
+                void append(LinkedList* list, listElement data);
+                void prepend(LinkedList* list, listElement data);
+                void insertAfter(LinkedList* list, Node* node, listElement data) ;
+                void deleteNode(LinkedList* list, Node* node);
+                void printLinkedList(LinkedList* list);
+                int getLength(LinkedList* list);
+                
+                #endif // LIST_H
+            </code></pre>
+        </div>
+        <div id="c-file" class="code-container code-block">
+            <pre><code>
+                #include "list.h"
+                #include "list.h"
+                
+                LinkedList* createLinkedList() {
+                    LinkedList* newList = (LinkedList*)malloc(sizeof(LinkedList));
+                    if (newList != NULL) {
+                        newList->head = NULL;
+                        newList->tail = NULL;
+                        newList->length = 0;
+                    }
+                    return newList;
+                }
+                
+                void append(LinkedList* list, listElement data) {
+                    Node* newNode = (Node*)malloc(sizeof(Node));
+                    if (newNode != NULL) {
+                        newNode->data = data;
+                        newNode->next = NULL;
+                        newNode->prev = list->tail;
+                
+                        if (list->tail == NULL) {
+                            list->head = newNode;
+                        } else {
+                            list->tail->next = newNode;
+                        }
+                
+                        list->tail = newNode;
+                        list->length++;
+                    }
+                }
+                
+                void prepend(LinkedList* list, listElement data) {
+                    Node* newNode = (Node*)malloc(sizeof(Node));
+                    if (newNode != NULL) {
+                        newNode->data = data;
+                        newNode->prev = NULL;
+                        newNode->next = list->head;
+                
+                        if (list->head == NULL) {
+                            list->tail = newNode;
+                        } else {
+                            list->head->prev = newNode;
+                        }
+                
+                        list->head = newNode;
+                        list->length++;
+                    }
+                }
+                
+                void insertAfter(LinkedList* list, Node* node, listElement data) {
+                    Node* newNode = (Node*)malloc(sizeof(Node));
+                    if (newNode != NULL) {
+                        newNode->data = data;
+                        newNode->prev = node;
+                        newNode->next = node->next;
+                
+                        if (node->next != NULL) {
+                            node->next->prev = newNode;
+                        }
+                
+                        node->next = newNode;
+                        list->length++;
+                    }
+                }
+                
+                void deleteNode(LinkedList* list, Node* node) {
+                    if (node->prev != NULL) {
+                        node->prev->next = node->next;
+                    } else {
+                        list->head = node->next;
+                    }
+                
+                    if (node->next != NULL) {
+                        node->next->prev = node->prev;
+                    } else {
+                        list->tail = node->prev;
+                    }
+                
+                    free(node);
+                    list->length--;
+                }
+                
+                void printLinkedList(LinkedList* list) {
+                    Node* current = list->head;
+                    while (current != NULL) {
+                        printf("%d ", current->data);
+                        current = current->next;
+                    }
+                    printf("\n");
+                }
+                
+                int getLength(LinkedList* list) {
+                    return list->length;
+                }
+            </code></pre>
+            </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
 </body>
 </html>
